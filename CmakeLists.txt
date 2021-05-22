@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.0)
+project(chat)
+
+# 配置编译选项  ，  ${CMAKE_CXX_FLAGS} 是系统的命令
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -g)
+
+
+
+# 配置头文件的搜索路径
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+
+
+
+
+
+
+
+
+/*
+《AI足球比赛系统》
+足球比赛时，通过手机拍摄进行视频数据采集，然后推送到云端进行数据分析，可以实现精彩动作的捕捉：
+    1.捕捉到射门的精彩片段
+    2.捕捉到组织射门的传球片段
+    3.自动统计出进球数
+    4.自动生成每个球员的精彩片段（射门、顶球、铲球、过人动作）
+/
