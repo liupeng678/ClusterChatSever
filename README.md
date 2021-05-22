@@ -46,7 +46,7 @@
 
 3. cmake的使用与学习
 - + 在vscode上配置cmake 辅助工具(界面操作+代码提示与检查)， 便于操作linux系统中的cmake. 
-- + 一个基本的编译所做的内容都可以在cmake中找到直接的配置选项。 
+- + 基本的编译程序所做的命令例如：g++ -o server -g muduo_server.cpp xx.cpp -l/usr/include -L/usr/ib -Imuduo_net -lmuduo_base -lpthread  都可以在cmake中找到对应的配置选项， 去自动生成makefile。 
 
  
 
@@ -68,6 +68,9 @@
 3. 线程数量和cpu核数量请保持一致， 这样避免不同核时候， 线程调用上下文调用过慢。 
 
 4. 公网链接的时候， 服务器绑定自己内网网卡的地址， 客户端访问服务器所连接的公网地址， 请求过来之后自然会通过路由找到内网所在的网卡。建立链接。 
+5. 如何设计开源文件的目录， bin放可执行文件  ， lib是生成的库文件 ， include是头文件， src 是源码， build 项目编译时候产生的临时文件， test放的代码， cmakelist.txt 设计编译文件的规则,  autobuild.sh 自动编译， readme.md 。  
+6. 
+
 
 # 参考文献
 1. https://blog.csdn.net/QIANGWEIYUAN/article/details/89023980
