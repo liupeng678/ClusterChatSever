@@ -51,7 +51,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /home/ubuntu/liupeng/ClusterChatSever
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ubuntu/liupeng/ClusterChatSever
+CMAKE_BINARY_DIR = /home/ubuntu/liupeng/ClusterChatSever/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/liupeng/ClusterChatSever/CMakeFiles /home/ubuntu/liupeng/ClusterChatSever/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/liupeng/ClusterChatSever/CMakeFiles 0
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/liupeng/ClusterChatSever/build/CMakeFiles /home/ubuntu/liupeng/ClusterChatSever/build/test/testmuduo/CMakeFiles/progress.marks
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(MAKE) -f CMakeFiles/Makefile2 test/testmuduo/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/liupeng/ClusterChatSever/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(MAKE) -f CMakeFiles/Makefile2 test/testmuduo/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,31 +97,60 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(MAKE) -f CMakeFiles/Makefile2 test/testmuduo/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(MAKE) -f CMakeFiles/Makefile2 test/testmuduo/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named server
+# Convenience name for target.
+test/testmuduo/CMakeFiles/server.dir/rule:
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(MAKE) -f CMakeFiles/Makefile2 test/testmuduo/CMakeFiles/server.dir/rule
+.PHONY : test/testmuduo/CMakeFiles/server.dir/rule
 
-# Build rule for target.
-server: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 server
+# Convenience name for target.
+server: test/testmuduo/CMakeFiles/server.dir/rule
+
 .PHONY : server
 
 # fast build rule for target.
 server/fast:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/build
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(MAKE) -f test/testmuduo/CMakeFiles/server.dir/build.make test/testmuduo/CMakeFiles/server.dir/build
 .PHONY : server/fast
+
+muduo_server.o: muduo_server.cpp.o
+
+.PHONY : muduo_server.o
+
+# target to build an object file
+muduo_server.cpp.o:
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(MAKE) -f test/testmuduo/CMakeFiles/server.dir/build.make test/testmuduo/CMakeFiles/server.dir/muduo_server.cpp.o
+.PHONY : muduo_server.cpp.o
+
+muduo_server.i: muduo_server.cpp.i
+
+.PHONY : muduo_server.i
+
+# target to preprocess a source file
+muduo_server.cpp.i:
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(MAKE) -f test/testmuduo/CMakeFiles/server.dir/build.make test/testmuduo/CMakeFiles/server.dir/muduo_server.cpp.i
+.PHONY : muduo_server.cpp.i
+
+muduo_server.s: muduo_server.cpp.s
+
+.PHONY : muduo_server.s
+
+# target to generate assembly for a file
+muduo_server.cpp.s:
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(MAKE) -f test/testmuduo/CMakeFiles/server.dir/build.make test/testmuduo/CMakeFiles/server.dir/muduo_server.cpp.s
+.PHONY : muduo_server.cpp.s
 
 # Help Target
 help:
@@ -132,6 +161,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... server"
 	@echo "... edit_cache"
+	@echo "... muduo_server.o"
+	@echo "... muduo_server.i"
+	@echo "... muduo_server.s"
 .PHONY : help
 
 
@@ -143,6 +175,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/ubuntu/liupeng/ClusterChatSever/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

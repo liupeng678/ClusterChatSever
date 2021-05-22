@@ -47,7 +47,28 @@
 3. cmake的使用与学习
 - + 在vscode上配置cmake 辅助工具(界面操作+代码提示与检查)， 便于操作linux系统中的cmake. 
 - + 基本的编译程序所做的命令例如：g++ -o server -g muduo_server.cpp xx.cpp -l/usr/include -L/usr/ib -Imuduo_net -lmuduo_base -lpthread  都可以在cmake中找到对应的配置选项， 去自动生成makefile。 
+- +  cmakelists.txt 真的很强， 通过add_subdirectory(src) 去找子cmakelists.txt去编译。 
 
+
+4. mysql 学习
+- + mysql 安装与账号、权限配置
+- + 创建业务需要用到的数据库和表。
+```sql
+CREATE TABLE IF NOT EXISTS user (id INT  AUTO_INCREMENT PRIMARY KEY  , name VARCHAR(50) NOT NULL UNIQUE ,  password VARCHAR(50) NOT NULL  , state   ENUM('online', 'offline')  DEFAULT 'offline'   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS friend (userid INT NOT NULL , friendid  INT NOT NULL  ,PRIMARY KEY (userid,friendid) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS allgroup (id INT  AUTO_INCREMENT PRIMARY KEY  , groupname VARCHAR(50) NOT NULL UNIQUE ,  groupdesc VARCHAR(200) DEFAULT ''  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS groupuser (groupid INT  NOT NULL , userid int  NOT NULL , grouprole   ENUM('creator', 'normal')  DEFAULT 'normal'  ,PRIMARY KEY (groupid,userid) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS offlinemessage (userid INT NOT NULL , message  VARCHAR(500) NOT NULL  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+4. 创建源代码目录
  
 
 
@@ -59,6 +80,7 @@
 
 1. define 内容别的地方引用时候要在头文件里面define才能用到。 
 2. g++  muduo_server.cpp  -o server -lmuduo_net  -lmuduo_base -lpthread  这个连接库是有依赖关系的， 最基础的在最前面。 
+3. sudo  netstat  -tanp 查看端口对应的进程。 
 
 
 ## 设计问题
@@ -74,6 +96,6 @@
 
 # 参考文献
 1. https://blog.csdn.net/QIANGWEIYUAN/article/details/89023980
-2. 
+2. 服务器编程教程
 
 # 版本记录

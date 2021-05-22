@@ -48,7 +48,7 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ubuntu/liupeng/ClusterChatSever/test/testmuduo
+CMAKE_SOURCE_DIR = /home/ubuntu/liupeng/ClusterChatSever
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/ubuntu/liupeng/ClusterChatSever/build
@@ -120,35 +120,8 @@ server: cmake_check_build_system
 
 # fast build rule for target.
 server/fast:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/build
+	$(MAKE) -f test/testmuduo/CMakeFiles/server.dir/build.make test/testmuduo/CMakeFiles/server.dir/build
 .PHONY : server/fast
-
-muduo_server.o: muduo_server.cpp.o
-
-.PHONY : muduo_server.o
-
-# target to build an object file
-muduo_server.cpp.o:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/muduo_server.cpp.o
-.PHONY : muduo_server.cpp.o
-
-muduo_server.i: muduo_server.cpp.i
-
-.PHONY : muduo_server.i
-
-# target to preprocess a source file
-muduo_server.cpp.i:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/muduo_server.cpp.i
-.PHONY : muduo_server.cpp.i
-
-muduo_server.s: muduo_server.cpp.s
-
-.PHONY : muduo_server.s
-
-# target to generate assembly for a file
-muduo_server.cpp.s:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/muduo_server.cpp.s
-.PHONY : muduo_server.cpp.s
 
 # Help Target
 help:
@@ -157,11 +130,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... server"
 	@echo "... edit_cache"
-	@echo "... muduo_server.o"
-	@echo "... muduo_server.i"
-	@echo "... muduo_server.s"
+	@echo "... server"
 .PHONY : help
 
 
