@@ -37,7 +37,7 @@ void ChatServer::onConnection(const TcpConnectionPtr &conn)
     // 客户端断开链接
     if (!conn->connected())
     {
-        //ChatService::instance()->clientCloseException(conn);
+        ChatService::instance()->clientCloseException(conn);  // 如果服务器异常了， 业务类也要做一些关闭， 这里解耦不了啊。还是要加的
         conn->shutdown();
     }
 }

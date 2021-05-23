@@ -19,11 +19,11 @@ ChatService::ChatService()
     _msgHandlerMap.insert({LOGIN_MSG, std::bind(&ChatService::login, this, _1, _2, _3)});
     //_msgHandlerMap.insert({LOGINOUT_MSG, std::bind(&ChatService::loginout, this, _1, _2, _3)});
     _msgHandlerMap.insert({REG_MSG, std::bind(&ChatService::reg, this, _1, _2, _3)});
-    // _msgHandlerMap.insert({ONE_CHAT_MSG, std::bind(&ChatService::oneChat, this, _1, _2, _3)});
-    // _msgHandlerMap.insert({ADD_FRIEND_MSG, std::bind(&ChatService::addFriend, this, _1, _2, _3)});
+    _msgHandlerMap.insert({ONE_CHAT_MSG, std::bind(&ChatService::oneChat, this, _1, _2, _3)});
+    _msgHandlerMap.insert({ADD_FRIEND_MSG, std::bind(&ChatService::addFriend, this, _1, _2, _3)});
 
     // // 群组业务管理相关事件处理回调注册
-    // _msgHandlerMap.insert({CREATE_GROUP_MSG, std::bind(&ChatService::createGroup, this, _1, _2, _3)});
+    _msgHandlerMap.insert({CREATE_GROUP_MSG, std::bind(&ChatService::createGroup, this, _1, _2, _3)});
     // _msgHandlerMap.insert({ADD_GROUP_MSG, std::bind(&ChatService::addGroup, this, _1, _2, _3)});
     // _msgHandlerMap.insert({GROUP_CHAT_MSG, std::bind(&ChatService::groupChat, this, _1, _2, _3)});
 
@@ -36,11 +36,11 @@ ChatService::ChatService()
 }
 
 // 服务器异常，业务重置方法
-// void ChatService::reset()
-// {
-//     // 把online状态的用户，设置成offline
-//     _userModel.resetState();
-// }
+void ChatService::reset()
+{
+    // 把online状态的用户，设置成offline
+    _userModel.resetState();
+}
 
 // 获取消息对应的处理器
 MsgHandler ChatService::getHandler(int msgid)
@@ -108,7 +108,7 @@ void ChatService::login(const TcpConnectionPtr &conn, json &js, Timestamp time)
                 _offlineMsgModel.remove(id);
             }
 
-            // 查询该用户的好友信息并返回
+            // 查询该用户的好友列表并返回
             vector<User> userVec = _friendModel.query(id);
             if (!userVec.empty())
             {
@@ -218,88 +218,88 @@ void ChatService::reg(const TcpConnectionPtr &conn, json &js, Timestamp time)
 //     _userModel.updateState(user);
 // }
 
-// // 处理客户端异常退出
-// void ChatService::clientCloseException(const TcpConnectionPtr &conn)
-// {
-//     User user;
-//     {
-//         lock_guard<mutex> lock(_connMutex);
-//         for (auto it = _userConnMap.begin(); it != _userConnMap.end(); ++it)
-//         {
-//             if (it->second == conn)
-//             {
-//                 // 从map表删除用户的链接信息
-//                 user.setId(it->first);
-//                 _userConnMap.erase(it);
-//                 break;
-//             }
-//         }
-//     }
+// 处理客户端异常退出
+void ChatService::clientCloseException(const TcpConnectionPtr &conn)
+{
+    User user;
+    {
+        lock_guard<mutex> lock(_connMutex);
+        for (auto it = _userConnMap.begin(); it != _userConnMap.end(); ++it)
+        {
+            if (it->second == conn)
+            {
+                // 从map表删除用户的链接信息
+                user.setId(it->first);
+                _userConnMap.erase(it);
+                break;
+            }
+        }
+    }
 
-//     // 用户注销，相当于就是下线，在redis中取消订阅通道
-//     _redis.unsubscribe(user.getId()); 
+    // 用户注销，相当于就是下线，在redis中取消订阅通道
+    _redis.unsubscribe(user.getId()); 
 
-//     // 更新用户的状态信息
-//     if (user.getId() != -1)
-//     {
-//         user.setState("offline");
-//         _userModel.updateState(user);
-//     }
-// }
+    // 更新用户的状态信息
+    if (user.getId() != -1)
+    {
+        user.setState("offline");
+        _userModel.updateState(user);
+    }
+}
 
-// // 一对一聊天业务
-// void ChatService::oneChat(const TcpConnectionPtr &conn, json &js, Timestamp time)
-// {
-//     int toid = js["toid"].get<int>();
+// 一对一聊天业务
+void ChatService::oneChat(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int toid = js["toid"].get<int>();
 
-//     {
-//         lock_guard<mutex> lock(_connMutex);
-//         auto it = _userConnMap.find(toid);
-//         if (it != _userConnMap.end())
-//         {
-//             // toid在线，转发消息   服务器主动推送消息给toid用户
-//             it->second->send(js.dump());
-//             return;
-//         }
-//     }
+    {
+        lock_guard<mutex> lock(_connMutex);  // 因为存储用户在线信息的容器不是线程安全的， 多线程访问的时候必须注意线程安全。还要注意锁的力度不要太大。 锁只保证容器读取安全
+        auto it = _userConnMap.find(toid);
+        if (it != _userConnMap.end())  // 找到的话， 直接往这个id的端口发送。
+        {
+            // toid在线，转发消息   服务器主动推送消息给toid用户
+            it->second->send(js.dump());
+            return;
+        }
+    }
 
-//     // 查询toid是否在线 
-//     User user = _userModel.query(toid);
-//     if (user.getState() == "online")
-//     {
-//         _redis.publish(toid, js.dump());
-//         return;
-//     }
+    // 查询toid是否在线 
+    User user = _userModel.query(toid);
+    if (user.getState() == "online")
+    {
+        _redis.publish(toid, js.dump());
+        return;
+    }
 
-//     // toid不在线，存储离线消息
-//     _offlineMsgModel.insert(toid, js.dump());
-// }
+    // toid不在线，存储离线消息
+    _offlineMsgModel.insert(toid, js.dump());
+}
 
-// // 添加好友业务 msgid id friendid
-// void ChatService::addFriend(const TcpConnectionPtr &conn, json &js, Timestamp time)
-// {
-//     int userid = js["id"].get<int>();
-//     int friendid = js["friendid"].get<int>();
+// 添加好友业务 msgid id friendid
+void ChatService::addFriend(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    int friendid = js["friendid"].get<int>();
 
-//     // 存储好友信息
-//     _friendModel.insert(userid, friendid);
-// }
+    // 存储好友信息
+    _friendModel.insert(userid, friendid);
+}
 
-// // 创建群组业务
-// void ChatService::createGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
-// {
-//     int userid = js["id"].get<int>();
-//     string name = js["groupname"];
-//     string desc = js["groupdesc"];
+// 创建群组业务
+void ChatService::createGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    string name = js["groupname"];
+    string desc = js["groupdesc"];
 
-//     // 存储新创建的群组信息
-//     Group group(-1, name, desc);
-//     if (_groupModel.createGroup(group))
-//     {
-//         // 存储群组创建人信息
-//         _groupModel.addGroup(userid, group.getId(), "creator");
-//     }
-// }
+    // 存储新创建的群组信息
+    Group group(-1, name, desc);
+    if (_groupModel.createGroup(group))
+    {
+        // 存储群组创建人信息
+        _groupModel.addGroup(userid, group.getId(), "creator");
+    }
+}
 
 // // 加入群组业务
 // void ChatService::addGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)

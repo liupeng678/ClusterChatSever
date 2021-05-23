@@ -10,10 +10,10 @@ using namespace muduo;
 using namespace muduo::net;
 
 // #include "redis.hpp"
-// #include "groupmodel.hpp"
-// #include "friendmodel.hpp"
+//#include "groupmodel.hpp"
+#include "friendmodel.hpp"
 #include "usermodel.hpp"
-// #include "offlinemessagemodel.hpp"
+#include "offlinemessagemodel.hpp"
 #include "json.hpp"
 using json = nlohmann::json;
 
@@ -43,10 +43,10 @@ public:
     // void groupChat(const TcpConnectionPtr &conn, json &js, Timestamp time);
     // // 处理注销业务
     // void loginout(const TcpConnectionPtr &conn, json &js, Timestamp time);
-    // // 处理客户端异常退出
-    // void clientCloseException(const TcpConnectionPtr &conn);
-    // // 服务器异常，业务重置方法
-    // void reset();
+    // 处理客户端异常退出
+    void clientCloseException(const TcpConnectionPtr &conn);
+    // 服务器异常，业务重置方法
+    void reset();
     // 获取消息对应的处理器
     MsgHandler getHandler(int msgid);
     // 从redis消息队列中获取订阅的消息
@@ -57,16 +57,16 @@ private:
 
     // 存储消息id和其对应的业务处理方法 , MsgHandler是存储的这个类的成员函数， 通过unordered_map封装起来， 供其他类调用。 做到回调解耦。 
     unordered_map<int, MsgHandler> _msgHandlerMap;
-    // 存储在线用户的通信连接
+    // 存储在线用户的通信连接, 异常退出的时候可以遍历将里面的online改成offline
     unordered_map<int, TcpConnectionPtr> _userConnMap;
     // 定义互斥锁，保证_userConnMap的线程安全
     mutex _connMutex;
 
     // 数据操作类对象
     UserModel _userModel;
-    // OfflineMsgModel _offlineMsgModel;
-    // FriendModel _friendModel;
-    // GroupModel _groupModel;
+    OfflineMsgModel _offlineMsgModel;
+    FriendModel _friendModel;
+    //GroupModel _groupModel;
 
     // redis操作对象
     //Redis _redis;

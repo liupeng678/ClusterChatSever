@@ -1,5 +1,14 @@
 {
 	"files.associations": {
-		"ostream": "cpp"
+		"ostream": "cpp",
+		"bitset": "cpp",
+		"functional": "cpp",
+		"fstream": "cpp",
+		"sstream": "cpp",
+		"stdexcept": "cpp",
+		"tuple": "cpp",
+		"typeinfo": "cpp",
+		"memory": "cpp",
+		"optional": "cpp"
 	}
 }
