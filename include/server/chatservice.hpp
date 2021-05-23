@@ -12,7 +12,7 @@ using namespace muduo::net;
 // #include "redis.hpp"
 // #include "groupmodel.hpp"
 // #include "friendmodel.hpp"
-// #include "usermodel.hpp"
+#include "usermodel.hpp"
 // #include "offlinemessagemodel.hpp"
 #include "json.hpp"
 using json = nlohmann::json;
@@ -63,7 +63,7 @@ private:
     mutex _connMutex;
 
     // 数据操作类对象
-    // UserModel _userModel;
+    UserModel _userModel;
     // OfflineMsgModel _offlineMsgModel;
     // FriendModel _friendModel;
     // GroupModel _groupModel;
