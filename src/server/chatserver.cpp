@@ -37,7 +37,7 @@ void ChatServer::onConnection(const TcpConnectionPtr &conn)
     // 客户端断开链接
     if (!conn->connected())
     {
-        ChatService::instance()->clientCloseException(conn);
+        //ChatService::instance()->clientCloseException(conn);
         conn->shutdown();
     }
 }
@@ -54,10 +54,11 @@ void ChatServer::onMessage(const TcpConnectionPtr &conn,
 
     // 数据的反序列化
     json js = json::parse(buf);
-    // 达到的目的：完全解耦网络模块的代码和业务模块的代码 , 通过在map中事先配置js["msgid"]各种回调，当数据来了， 直接
-    // 触发对应的回调， 就避免了在这个类写业务代码，做到了网络层和业务层的解耦， 通过map回调解耦的。 
-    // 通过js["msgid"] 获取=》业务handler=》conn  js  time
-    auto msgHandler = ChatService::instance()->getHandler(js["msgid"].get<int>());
+    //当数据来了， 直接触发对应的回调onConnection， 回调到这里解耦网络模块的代码和业务模块的代码 , 通过定义一个类， 这个类在map中事先配置js["msgid"]各种回调方法为自身的成员函数， ， 就避免了在这个类写业务代码，做到了网络层和业务层的解耦，
+    // 
+    // 通过js["msgid"] 获取=》业务handler函数对象=》conn  js  time
+    // 将业务封装到了业务类中， 当网络这块回调启动后根据数据的id拿到业务类的对应方法进行调用。 业务再怎么改， 这边代码都不动。 
+    auto msgHandler = ChatService::instance()->getHandler(js["msgid"].get<int>()); 
     // 回调消息绑定好的事件处理器，来执行相应的业务处理
     msgHandler(conn, js, time);
 }
