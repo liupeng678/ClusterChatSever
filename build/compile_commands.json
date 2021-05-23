@@ -1,7 +1,12 @@
 [
 {
-  "directory": "/home/ubuntu/liupeng/ClusterChatSever/build/test/testmuduo",
-  "command": "/usr/bin/c++   -I/home/ubuntu/liupeng/ClusterChatSever/include  -g -g   -o CMakeFiles/server.dir/muduo_server.cpp.o -c /home/ubuntu/liupeng/ClusterChatSever/test/testmuduo/muduo_server.cpp",
-  "file": "/home/ubuntu/liupeng/ClusterChatSever/test/testmuduo/muduo_server.cpp"
+  "directory": "/home/ubuntu/liupeng/ClusterChatSever/build/src/server",
+  "command": "/usr/bin/c++   -I/home/ubuntu/liupeng/ClusterChatSever/include -I/home/ubuntu/liupeng/ClusterChatSever/include/server -I/home/ubuntu/liupeng/ClusterChatSever/include/server/db -I/home/ubuntu/liupeng/ClusterChatSever/include/server/model -I/home/ubuntu/liupeng/ClusterChatSever/include/server/redis -I/home/ubuntu/liupeng/ClusterChatSever/thirdparty  -g -g   -o CMakeFiles/ChatServer.dir/chatserver.cpp.o -c /home/ubuntu/liupeng/ClusterChatSever/src/server/chatserver.cpp",
+  "file": "/home/ubuntu/liupeng/ClusterChatSever/src/server/chatserver.cpp"
+},
+{
+  "directory": "/home/ubuntu/liupeng/ClusterChatSever/build/src/server",
+  "command": "/usr/bin/c++   -I/home/ubuntu/liupeng/ClusterChatSever/include -I/home/ubuntu/liupeng/ClusterChatSever/include/server -I/home/ubuntu/liupeng/ClusterChatSever/include/server/db -I/home/ubuntu/liupeng/ClusterChatSever/include/server/model -I/home/ubuntu/liupeng/ClusterChatSever/include/server/redis -I/home/ubuntu/liupeng/ClusterChatSever/thirdparty  -g -g   -o CMakeFiles/ChatServer.dir/main.cpp.o -c /home/ubuntu/liupeng/ClusterChatSever/src/server/main.cpp",
+  "file": "/home/ubuntu/liupeng/ClusterChatSever/src/server/main.cpp"
 }
 ]

@@ -13,7 +13,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.10.2/CMakeSystem.cmake"
   "CMakeFiles/feature_tests.c"
   "CMakeFiles/feature_tests.cxx"
-  "../test/testmuduo/CMakeLists.txt"
+  "../src/CMakeLists.txt"
+  "../src/server/CMakeLists.txt"
   "/usr/share/cmake-3.10/Modules/CMakeCCompiler.cmake.in"
   "/usr/share/cmake-3.10/Modules/CMakeCCompilerABI.c"
   "/usr/share/cmake-3.10/Modules/CMakeCInformation.cmake"
@@ -111,10 +112,11 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/3.10.2/CMakeCCompiler.cmake"
   "CMakeFiles/3.10.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
-  "test/testmuduo/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "src/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "src/server/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "test/testmuduo/CMakeFiles/server.dir/DependInfo.cmake"
+  "src/server/CMakeFiles/ChatServer.dir/DependInfo.cmake"
   )

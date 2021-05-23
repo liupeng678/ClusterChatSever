@@ -1,5 +1,7 @@
 /home/ubuntu/liupeng/ClusterChatSever/build/CMakeFiles/rebuild_cache.dir
 /home/ubuntu/liupeng/ClusterChatSever/build/CMakeFiles/edit_cache.dir
-/home/ubuntu/liupeng/ClusterChatSever/build/test/testmuduo/CMakeFiles/rebuild_cache.dir
-/home/ubuntu/liupeng/ClusterChatSever/build/test/testmuduo/CMakeFiles/server.dir
-/home/ubuntu/liupeng/ClusterChatSever/build/test/testmuduo/CMakeFiles/edit_cache.dir
+/home/ubuntu/liupeng/ClusterChatSever/build/src/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/liupeng/ClusterChatSever/build/src/CMakeFiles/edit_cache.dir
+/home/ubuntu/liupeng/ClusterChatSever/build/src/server/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/liupeng/ClusterChatSever/build/src/server/CMakeFiles/ChatServer.dir
+/home/ubuntu/liupeng/ClusterChatSever/build/src/server/CMakeFiles/edit_cache.dir
