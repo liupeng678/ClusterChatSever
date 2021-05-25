@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS groupuser (groupid INT  NOT NULL , userid int  NOT NU
 CREATE TABLE IF NOT EXISTS offlinemessage (userid INT NOT NULL , message  VARCHAR(500) NOT NULL  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
+
 4. 创建源代码目录
 整个项目在src，include中分为后台和客户端。 各种目录的编译通过各级的cmakelist.txt去控制。 
 
