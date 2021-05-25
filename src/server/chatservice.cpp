@@ -24,8 +24,8 @@ ChatService::ChatService()
 
     // // 群组业务管理相关事件处理回调注册
     _msgHandlerMap.insert({CREATE_GROUP_MSG, std::bind(&ChatService::createGroup, this, _1, _2, _3)});
-    // _msgHandlerMap.insert({ADD_GROUP_MSG, std::bind(&ChatService::addGroup, this, _1, _2, _3)});
-    // _msgHandlerMap.insert({GROUP_CHAT_MSG, std::bind(&ChatService::groupChat, this, _1, _2, _3)});
+    _msgHandlerMap.insert({ADD_GROUP_MSG, std::bind(&ChatService::addGroup, this, _1, _2, _3)});
+    _msgHandlerMap.insert({GROUP_CHAT_MSG, std::bind(&ChatService::groupChat, this, _1, _2, _3)});
 
     // // 连接redis服务器
     // if (_redis.connect())
@@ -237,7 +237,7 @@ void ChatService::clientCloseException(const TcpConnectionPtr &conn)
     }
 
     // 用户注销，相当于就是下线，在redis中取消订阅通道
-    _redis.unsubscribe(user.getId()); 
+    //_redis.unsubscribe(user.getId()); 
 
     // 更新用户的状态信息
     if (user.getId() != -1)
@@ -296,51 +296,51 @@ void ChatService::createGroup(const TcpConnectionPtr &conn, json &js, Timestamp 
     Group group(-1, name, desc);
     if (_groupModel.createGroup(group))
     {
-        // 存储群组创建人信息
+        // 存储群组创建人信息 ， 在那个中间表中加。 
         _groupModel.addGroup(userid, group.getId(), "creator");
     }
 }
 
-// // 加入群组业务
-// void ChatService::addGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
-// {
-//     int userid = js["id"].get<int>();
-//     int groupid = js["groupid"].get<int>();
-//     _groupModel.addGroup(userid, groupid, "normal");
-// }
+// 加入群组业务
+void ChatService::addGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    int groupid = js["groupid"].get<int>();
+    _groupModel.addGroup(userid, groupid, "normal");
+}
 
-// // 群组聊天业务
-// void ChatService::groupChat(const TcpConnectionPtr &conn, json &js, Timestamp time)
-// {
-//     int userid = js["id"].get<int>();
-//     int groupid = js["groupid"].get<int>();
-//     vector<int> useridVec = _groupModel.queryGroupUsers(userid, groupid);
+// 群组聊天业务
+void ChatService::groupChat(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    int groupid = js["groupid"].get<int>();
+    vector<int> useridVec = _groupModel.queryGroupUsers(userid, groupid);
 
-//     lock_guard<mutex> lock(_connMutex);
-//     for (int id : useridVec)
-//     {
-//         auto it = _userConnMap.find(id);
-//         if (it != _userConnMap.end())
-//         {
-//             // 转发群消息
-//             it->second->send(js.dump());
-//         }
-//         else
-//         {
-//             // 查询toid是否在线 
-//             User user = _userModel.query(id);
-//             if (user.getState() == "online")
-//             {
-//                 _redis.publish(id, js.dump());
-//             }
-//             else
-//             {
-//                 // 存储离线群消息
-//                 _offlineMsgModel.insert(id, js.dump());
-//             }
-//         }
-//     }
-// }
+    lock_guard<mutex> lock(_connMutex);
+    for (int id : useridVec)
+    {
+        auto it = _userConnMap.find(id);  // _userConnMap 存储在线conn的map 不是线程安全的。  避免干扰。
+        if (it != _userConnMap.end())
+        {
+            // 转发群消息
+            it->second->send(js.dump());
+        }
+        else
+        {
+            // 查询toid是否在线 
+            User user = _userModel.query(id);
+            if (user.getState() == "online")
+            {
+                _redis.publish(id, js.dump());
+            }
+            else
+            {
+                // 存储离线群消息
+                _offlineMsgModel.insert(id, js.dump());
+            }
+        }
+    }
+}
 
 // // 从redis消息队列中获取订阅的消息
 // void ChatService::handleRedisSubscribeMessage(int userid, string msg)
