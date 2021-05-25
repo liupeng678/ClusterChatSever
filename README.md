@@ -1,6 +1,16 @@
 # ClusterChatSever
 
 
+
+# How to use it ? 
+1. 安装mysql， 更改root密码为root, 设置监听地址为所有，而不是本地， 并且mysql -u root  -p 的命令前面不要加sudo就能进去。 不然代码接口访问不了mysql。 此外还要安装 sudo apt-get install libmysqlclient-dev ， 这是开发的依赖库。 
+2. git clone 代码， 将代码拷贝到本地。 
+3. 安装配置nignx , 
+- + ./configure --with-stream ， 缺什么安装什么 sudo apt-get install libpcre3 libpcre3-dev   sudo apt-get install openssl libssl-dev
+
+- +  make && make install   编译完成后，默认安装在了/usr/local/nginx目录。
+- +  修改nginx配置文件内容为ClusterChatSever/test/conf/nginx.conf中的内容。 
+
 # 介绍
 
 
