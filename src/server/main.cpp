@@ -1,5 +1,5 @@
 #include "chatserver.hpp"
-//#include "chatservice.hpp"
+#include "chatservice.hpp"
 #include <iostream>
 #include <signal.h>
 using namespace std;

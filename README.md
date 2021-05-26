@@ -5,11 +5,14 @@
 # How to use it ? 
 1. 安装mysql， 更改root密码为root, 设置监听地址为所有，而不是本地， 并且mysql -u root  -p 的命令前面不要加sudo就能进去。 不然代码接口访问不了mysql。 此外还要安装 sudo apt-get install libmysqlclient-dev ， 这是开发的依赖库。 
 2. git clone 代码， 将代码拷贝到本地。 
-3. 安装配置nignx , 
+3. 安装配置nignx
 - + ./configure --with-stream ， 缺什么安装什么 sudo apt-get install libpcre3 libpcre3-dev   sudo apt-get install openssl libssl-dev
 
 - +  make && make install   编译完成后，默认安装在了/usr/local/nginx目录。
 - +  修改nginx配置文件内容为ClusterChatSever/test/conf/nginx.conf中的内容。 
+- + 这里除了自己把字母拼错， 出现了两个问题，一个是没有shared 库， 这里面我就参照【3】做了，然后又出现了 [error] open() "/usr/local/nginx/logs/nginx.pid" failed (2: No such file or directory)问题， 参照【4】解决。最后进入安装的nginx/bin 中 nginx -s reload成功。 
+4.  配置redis  这里就不介绍了， 和nginx差不多， 记得在cmake中添加依赖库。 
+5. 运行调试， 发现我们你nginx设置的断开链接事件太短了。 需要注意一下。 
 
 # 介绍
 
@@ -172,5 +175,7 @@ CREATE TABLE IF NOT EXISTS offlinemessage (userid INT NOT NULL , message  VARCHA
 #   参考文献
 1. https://blog.csdn.net/QIANGWEIYUAN/article/details/89023980
 2. 服务器编程教程
+3. https://blog.csdn.net/lihao19910921/article/details/81907795
+4. https://blog.csdn.net/tjcyjd/article/details/69683360
 
 #   版本记录

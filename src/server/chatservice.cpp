@@ -27,12 +27,12 @@ ChatService::ChatService()
     _msgHandlerMap.insert({ADD_GROUP_MSG, std::bind(&ChatService::addGroup, this, _1, _2, _3)});
     _msgHandlerMap.insert({GROUP_CHAT_MSG, std::bind(&ChatService::groupChat, this, _1, _2, _3)});
 
-    // // 连接redis服务器
-    // if (_redis.connect())
-    // {
-    //     // 设置上报消息的回调
-    //     _redis.init_notify_handler(std::bind(&ChatService::handleRedisSubscribeMessage, this, _1, _2));
-    // }
+    // 连接redis服务器
+    if (_redis.connect())
+    {
+        // 设置上报消息的回调
+        _redis.init_notify_handler(std::bind(&ChatService::handleRedisSubscribeMessage, this, _1, _2));
+    }
 }
 
 // 服务器异常，业务重置方法
@@ -196,27 +196,27 @@ void ChatService::reg(const TcpConnectionPtr &conn, json &js, Timestamp time)
     }
 }
 
-// // 处理注销业务
-// void ChatService::loginout(const TcpConnectionPtr &conn, json &js, Timestamp time)
-// {
-//     int userid = js["id"].get<int>();
+// 处理注销业务
+void ChatService::loginout(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
 
-//     {
-//         lock_guard<mutex> lock(_connMutex);
-//         auto it = _userConnMap.find(userid);
-//         if (it != _userConnMap.end())
-//         {
-//             _userConnMap.erase(it);
-//         }
-//     }
+    {
+        lock_guard<mutex> lock(_connMutex);
+        auto it = _userConnMap.find(userid);
+        if (it != _userConnMap.end())
+        {
+            _userConnMap.erase(it);
+        }
+    }
 
-//     // 用户注销，相当于就是下线，在redis中取消订阅通道
-//     _redis.unsubscribe(userid); 
+    // 用户注销，相当于就是下线，在redis中取消订阅通道
+    _redis.unsubscribe(userid); 
 
-//     // 更新用户的状态信息
-//     User user(userid, "", "", "offline");
-//     _userModel.updateState(user);
-// }
+    // 更新用户的状态信息
+    User user(userid, "", "", "offline");
+    _userModel.updateState(user);
+}
 
 // 处理客户端异常退出
 void ChatService::clientCloseException(const TcpConnectionPtr &conn)
@@ -342,17 +342,17 @@ void ChatService::groupChat(const TcpConnectionPtr &conn, json &js, Timestamp ti
     }
 }
 
-// // 从redis消息队列中获取订阅的消息
-// void ChatService::handleRedisSubscribeMessage(int userid, string msg)
-// {
-//     lock_guard<mutex> lock(_connMutex);
-//     auto it = _userConnMap.find(userid);
-//     if (it != _userConnMap.end())
-//     {
-//         it->second->send(msg);
-//         return;
-//     }
+// 从redis消息队列中获取订阅的消息
+void ChatService::handleRedisSubscribeMessage(int userid, string msg)
+{
+    lock_guard<mutex> lock(_connMutex);
+    auto it = _userConnMap.find(userid);
+    if (it != _userConnMap.end())
+    {
+        it->second->send(msg);
+        return;
+    }
 
-//     // 存储该用户的离线消息
-//     _offlineMsgModel.insert(userid, msg);
-// }
+    // 存储该用户的离线消息
+    _offlineMsgModel.insert(userid, msg);
+}

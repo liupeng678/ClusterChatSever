@@ -9,7 +9,7 @@ using namespace std;
 using namespace muduo;
 using namespace muduo::net;
 
-// #include "redis.hpp"
+#include "redis.hpp"
 #include "groupmodel.hpp"
 #include "friendmodel.hpp"
 #include "usermodel.hpp"
@@ -50,7 +50,7 @@ public:
     // 获取消息对应的处理器
     MsgHandler getHandler(int msgid);
     // 从redis消息队列中获取订阅的消息
-    //void handleRedisSubscribeMessage(int, string);
+    void handleRedisSubscribeMessage(int, string);
 
 private:
     ChatService();
@@ -69,7 +69,7 @@ private:
     GroupModel _groupModel;
 
     // redis操作对象
-    //Redis _redis;
+    Redis _redis;
 };
 
 #endif
