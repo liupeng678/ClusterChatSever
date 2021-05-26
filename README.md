@@ -12,8 +12,8 @@
 - +  修改nginx配置文件内容为ClusterChatSever/test/conf/nginx.conf中的内容。 
 - + 这里除了自己把字母拼错， 出现了两个问题，一个是没有shared 库， 这里面我就参照【3】做了，然后又出现了 [error] open() "/usr/local/nginx/logs/nginx.pid" failed (2: No such file or directory)问题， 参照【4】解决。最后进入安装的nginx/bin 中 nginx -s reload成功。 
 4.  配置redis  这里就不介绍了， 和nginx差不多， 记得在cmake中添加依赖库(我已经添加了)。 
-5. 运行调试， 发现之前ginx设置的断开链接事件太短了。 需要注意一下（已经修改）。 最后得出来运行的效果。
- 
+5. 运行调试， 发现之前ginx设置的断开链接事件太短了。 需要注意一下（已经修改），而且监听的端口要设置成路由器分配给网卡的路由。 最后得出来运行的效果正常。
+
 
 # 介绍
 
